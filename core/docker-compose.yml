@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  tpro_nats_service:
+    image: ${SERVICE_NAME}_${PROJECT_NAME}:${MODE}-${SERVICE_VERSION}
+    networks:
+      - lan
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      #- ../../logs:/logs
+      - ../../logs:/opt/app/logs
+    environment:
+      - SERVICE_NAME=${SERVICE_NAME}
+      - SERVICE_VERSION=${SERVICE_VERSION}
+      - DB_USER=${DB_USER}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_POOL_MAX=${DB_POOL_MAX}
+      - URL_NATS=${URL_NATS}
+      - JAEGER_HOST=${JAEGER_HOST}
+      - JAEGER_PORT=${JAEGER_PORT}
+      - DEBUG=${DEBUG}
+      - LOG_FILE_NAME=${LOG_FILE_NAME}
+      - MAX_SIZE=${MAX_SIZE}
+      - MAX_BACKUPS=${MAX_BACKUPS}
+      - MAX_AGE=${MAX_AGE}
+      - COMPRESS=${COMPRESS}
+      - TYPE_JAEGER=${TYPE_JAEGER}
+      - PARAM_JAEGER=${PARAM_JAEGER}
+      - LOG_SPANS_JAEGER=${LOG_SPANS_JAEGER}
+      - TOTAL_WAIT_NATS=${TOTAL_WAIT_NATS}
+      - RECON_DELAY_NATS=${RECON_DELAY_NATS}
+      - TOKEN_NATS=${TOKEN_NATS}
+    build:
+      context: .
+
+networks:
+  lan:
+    external:
+      name: ${DCAPE_NET}
